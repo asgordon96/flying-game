@@ -2,12 +2,14 @@
 (function() {
   this.Clouds = (function() {
     Clouds.preload = function(game) {
-      return game.load.image("cloud", "sprites/cloud.png");
+      game.load.image("cloud", "sprites/cloud.png");
+      return game.load.image("fog", "sprites/fog.png");
     };
 
     function Clouds(game, player) {
       this.game = game;
       this.player = player;
+      this.last_overlapped = 0;
     }
 
     Clouds.prototype.create_cloud = function(x, y) {
@@ -16,13 +18,23 @@
       this.clouds.enableBody = true;
       cloud = this.clouds.create(x, y, "cloud");
       cloud.scale.setTo(2.0, 2.0);
-      return cloud.body.velocity.x = -75;
+      cloud.body.velocity.x = -75;
+      this.fog = this.game.add.image(0, 0, "fog");
+      this.fog.scale.setTo(this.game.world.width / 10, this.game.world.height / 10);
+      this.fog.alpha = 0.8;
+      return this.fog.visible = false;
     };
 
     Clouds.prototype.update = function() {
-      return this.game.physics.arcade.overlap(this.player.sprite, this.clouds, function() {
-        return console.log("Collision!!!!!!!!");
-      });
+      this.game.physics.arcade.overlap(this.player.sprite, this.clouds, (function(_this) {
+        return function() {
+          _this.fog.visible = true;
+          return _this.last_overlapped = _this.game.time.now + 100;
+        };
+      })(this));
+      if (this.game.time.now > this.last_overlapped) {
+        return this.fog.visible = false;
+      }
     };
 
     return Clouds;

@@ -13,7 +13,7 @@ function create() {
 	game.stage.setBackgroundColor('rgb(135,206,250)');
 	player.create();
 	health_bar.create(10, 20);
-	clouds.create_cloud(300, 300);
+	clouds.create_cloud(600, 300);
 }
 
 function update() {

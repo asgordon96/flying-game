@@ -1,10 +1,12 @@
 class @Clouds
 	@preload: (game) ->
 		game.load.image("cloud", "sprites/cloud.png")
+		game.load.image("fog", "sprites/fog.png")
 	
 	constructor: (game, player) ->
 		@game = game
 		@player = player
+		@last_overlapped = 0
 	
 	create_cloud: (x, y) ->
 		@clouds = @game.add.group()
@@ -12,8 +14,20 @@ class @Clouds
 		cloud = @clouds.create(x, y, "cloud")
 		cloud.scale.setTo(2.0, 2.0)
 		cloud.body.velocity.x = -75
+		
+		@fog = @game.add.image(0, 0, "fog")
+		@fog.scale.setTo(@game.world.width / 10, @game.world.height / 10)
+		@fog.alpha = 0.8
+		@fog.visible = false
+		
 	
 	update: ->
-		@game.physics.arcade.overlap(@player.sprite, @clouds, ->
-			console.log("Collision!!!!!!!!")
+		@game.physics.arcade.overlap(@player.sprite, @clouds, =>
+			@fog.visible = true
+			@last_overlapped = @game.time.now + 100
 		)
+		
+		if @game.time.now > @last_overlapped
+			@fog.visible = false
+	
+	
