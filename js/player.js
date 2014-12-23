@@ -12,7 +12,21 @@
     };
 
     Player.prototype.create = function() {
-      return this.sprite = game.add.sprite(100, 100, "player");
+      this.sprite = game.add.sprite(100, 100, "player");
+      this.game.physics.arcade.enable(this.sprite);
+      return this.sprite.body.collideWorldBounds = true;
+    };
+
+    Player.prototype.update = function() {
+      var cursors;
+      cursors = this.game.input.keyboard.createCursorKeys();
+      if (cursors.up.isDown) {
+        return this.sprite.body.velocity.y = -100;
+      } else if (cursors.down.isDown) {
+        return this.sprite.body.velocity.y = 100;
+      } else {
+        return this.sprite.body.velocity.y = 0;
+      }
     };
 
     return Player;

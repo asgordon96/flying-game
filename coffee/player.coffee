@@ -9,6 +9,17 @@ class @Player
 	
 	create: ->
 		@sprite = game.add.sprite(100, 100, "player")
+		@game.physics.arcade.enable(@sprite)
+		@sprite.body.collideWorldBounds = true
+	
+	update: ->
+		cursors = @game.input.keyboard.createCursorKeys()
+		if cursors.up.isDown
+			@sprite.body.velocity.y = -100
+		else if cursors.down.isDown
+			@sprite.body.velocity.y = 100
+		else
+			@sprite.body.velocity.y = 0
 	
 	  
 	
