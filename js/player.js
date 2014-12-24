@@ -8,7 +8,7 @@
     }
 
     Player.prototype.preload = function() {
-      return game.load.image("player", "sprites/airplane_test.png");
+      return game.load.image("player", "sprites/airplane.png");
     };
 
     Player.prototype.create = function() {
@@ -19,13 +19,15 @@
 
     Player.prototype.update = function() {
       var cursors;
-      cursors = this.game.input.keyboard.createCursorKeys();
-      if (cursors.up.isDown) {
-        return this.sprite.body.velocity.y = -100;
-      } else if (cursors.down.isDown) {
-        return this.sprite.body.velocity.y = 100;
-      } else {
-        return this.sprite.body.velocity.y = 0;
+      if (this.sprite.alive) {
+        cursors = this.game.input.keyboard.createCursorKeys();
+        if (cursors.up.isDown) {
+          return this.sprite.body.velocity.y = -100;
+        } else if (cursors.down.isDown) {
+          return this.sprite.body.velocity.y = 100;
+        } else {
+          return this.sprite.body.velocity.y = 0;
+        }
       }
     };
 

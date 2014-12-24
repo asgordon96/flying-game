@@ -5,7 +5,7 @@ class @Player
 		@passenger_happiness = 100
 		
 	preload: ->
-		game.load.image("player", "sprites/airplane_test.png")
+		game.load.image("player", "sprites/airplane.png")
 	
 	create: ->
 		@sprite = game.add.sprite(100, 100, "player")
@@ -13,13 +13,15 @@ class @Player
 		@sprite.body.collideWorldBounds = true
 	
 	update: ->
-		cursors = @game.input.keyboard.createCursorKeys()
-		if cursors.up.isDown
-			@sprite.body.velocity.y = -100
-		else if cursors.down.isDown
-			@sprite.body.velocity.y = 100
-		else
-			@sprite.body.velocity.y = 0
+		if @sprite.alive
+			cursors = @game.input.keyboard.createCursorKeys()
+			if cursors.up.isDown
+				@sprite.body.velocity.y = -100
+			else if cursors.down.isDown
+				@sprite.body.velocity.y = 100
+			else
+				@sprite.body.velocity.y = 0
+			
 	
 	  
 	

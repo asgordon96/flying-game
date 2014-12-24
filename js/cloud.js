@@ -12,10 +12,13 @@
       this.last_overlapped = 0;
     }
 
+    Clouds.prototype.setup = function() {
+      this.clouds = this.game.add.group();
+      return this.clouds.enableBody = true;
+    };
+
     Clouds.prototype.create_cloud = function(x, y) {
       var cloud;
-      this.clouds = this.game.add.group();
-      this.clouds.enableBody = true;
       cloud = this.clouds.create(x, y, "cloud");
       cloud.scale.setTo(2.0, 2.0);
       cloud.body.velocity.x = -75;

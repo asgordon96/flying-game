@@ -8,9 +8,11 @@ class @Clouds
 		@player = player
 		@last_overlapped = 0
 	
-	create_cloud: (x, y) ->
+	setup: ->
 		@clouds = @game.add.group()
 		@clouds.enableBody = true
+	
+	create_cloud: (x, y) ->
 		cloud = @clouds.create(x, y, "cloud")
 		cloud.scale.setTo(2.0, 2.0)
 		cloud.body.velocity.x = -75
