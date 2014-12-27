@@ -29,7 +29,7 @@
     };
 
     Clouds.prototype.update = function() {
-      this.game.physics.arcade.overlap(this.player.sprite, this.clouds, (function(_this) {
+      this.game.physics.arcade.overlap(this.player.cockpit, this.clouds, (function(_this) {
         return function() {
           _this.fog.visible = true;
           return _this.last_overlapped = _this.game.time.now + 100;

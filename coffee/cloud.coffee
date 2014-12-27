@@ -24,7 +24,7 @@ class @Clouds
 		
 	
 	update: ->
-		@game.physics.arcade.overlap(@player.sprite, @clouds, =>
+		@game.physics.arcade.overlap(@player.cockpit, @clouds, =>
 			@fog.visible = true
 			@last_overlapped = @game.time.now + 100
 		)

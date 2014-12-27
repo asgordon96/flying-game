@@ -13,16 +13,16 @@ function preload() {
 
 function create() {
 	game.stage.setBackgroundColor('rgb(135,206,250)');
-	player.create();
+	player.create(100, 100);
 	clouds.setup();
 	oncoming_planes.setup();
 	health_bar.create(10, 20);
 	clouds.create_cloud(600, 300);
-	oncoming_planes.create_level(10, 1000, 2000, 400, 0);
+	//oncoming_planes.create_level(10, 1000, 2000, 400, 0);
 }
 
 function update() {
 	player.update();
 	clouds.update();
-	oncoming_planes.update();
+	//oncoming_planes.update();
 }
