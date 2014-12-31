@@ -2,7 +2,8 @@
 (function() {
   this.OncomingPlanes = (function() {
     OncomingPlanes.preload = function(game) {
-      return game.load.image("oncoming_plane", "sprites/airplane_flipped.png");
+      game.load.image("oncoming_plane_body", "sprites/airplane_flipped_body.png");
+      return game.load.image("oncoming_plane_tail", "sprites/airplane_flipped_tail.png");
     };
 
     function OncomingPlanes(game, player) {
@@ -16,9 +17,13 @@
     };
 
     OncomingPlanes.prototype.create_plane = function(x, y) {
-      var plane;
-      plane = this.planes.create(x, y, "oncoming_plane");
-      return plane.body.velocity.x = -300;
+      var body, tail;
+      tail = this.planes.create(x, y, "oncoming_plane_tail");
+      body = this.planes.create(x - 78, y + 23, "oncoming_plane_body");
+      tail.body.velocity.x = -300;
+      body.body.velocity.x = -300;
+      tail.other_part = body;
+      return body.other_part = tail;
     };
 
     OncomingPlanes.prototype.create_level = function(num_planes, x_start, x_end, y_start, y_end) {
@@ -32,11 +37,19 @@
       return _results;
     };
 
+    OncomingPlanes.prototype.stop = function() {
+      return this.planes.children.forEach(function(part) {
+        return part.body.velocity.x = 0;
+      });
+    };
+
     OncomingPlanes.prototype.update = function() {
-      return this.game.physics.arcade.overlap(this.planes, this.player.sprite, function(player, plane) {
+      return this.game.physics.arcade.overlap(this.player.plane, this.planes, function(player, plane) {
+        player.parent.children.forEach(function(sprite) {
+          return sprite.body.velocity.y = 0;
+        });
         plane.body.velocity.x = 0;
-        player.body.velocity.y = 0;
-        return player.alive = false;
+        return plane.other_part.body.velocity.x = 0;
       });
     };
 

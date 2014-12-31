@@ -14,9 +14,10 @@
     };
 
     Player.prototype.create = function(x, y) {
-      this.tail = game.add.sprite(x, y, "airplane_tail");
-      this.body = game.add.sprite(x - 6, y + 22, "airplane_body");
-      this.cockpit = game.add.sprite(x + 128, y + 23, "airplane_cockpit");
+      this.plane = this.game.add.group();
+      this.tail = this.plane.create(x, y, "airplane_tail");
+      this.body = this.plane.create(x - 6, y + 22, "airplane_body");
+      this.cockpit = this.plane.create(x + 128, y + 23, "airplane_cockpit");
       this.game.physics.arcade.enable(this.tail);
       this.game.physics.arcade.enable(this.body);
       return this.game.physics.arcade.enable(this.cockpit);

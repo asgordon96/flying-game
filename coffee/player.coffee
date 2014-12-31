@@ -10,16 +10,15 @@ class @Player
 		game.load.image("airplane_cockpit", "sprites/airplane_cockpit.png")
 	
 	create: (x, y)->
-		@tail = game.add.sprite(x, y, "airplane_tail")
-		@body = game.add.sprite(x-6, y+22, "airplane_body")
-		@cockpit = game.add.sprite(x+128, y+23, "airplane_cockpit")
+		@plane = @game.add.group()
+		@tail = @plane.create(x, y, "airplane_tail")
+		@body = @plane.create(x-6, y+22, "airplane_body")
+		@cockpit = @plane.create(x+128, y+23, "airplane_cockpit")
 		@game.physics.arcade.enable(@tail)
 		@game.physics.arcade.enable(@body)
 		@game.physics.arcade.enable(@cockpit)
 	
 	update: ->
-		#@game.physics.arcade.collide(@tail, @body)
-		#if @sprite.alive
 		cursors = @game.input.keyboard.createCursorKeys()
 		if cursors.up.isDown
 			if @tail.y <= 0

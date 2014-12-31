@@ -32,4 +32,10 @@ class @Clouds
 		if @game.time.now > @last_overlapped
 			@fog.visible = false
 	
+	create_level: (num_clouds, x_start, x_end, y_start, y_end) ->
+		for i in [1..num_clouds]
+			x = Math.random() * (x_end - x_start) + x_start
+			y = Math.random() * (y_end - y_start) + y_start
+			@create_cloud(x, y)
+	
 	

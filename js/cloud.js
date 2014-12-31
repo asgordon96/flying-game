@@ -40,6 +40,17 @@
       }
     };
 
+    Clouds.prototype.create_level = function(num_clouds, x_start, x_end, y_start, y_end) {
+      var i, x, y, _i, _results;
+      _results = [];
+      for (i = _i = 1; 1 <= num_clouds ? _i <= num_clouds : _i >= num_clouds; i = 1 <= num_clouds ? ++_i : --_i) {
+        x = Math.random() * (x_end - x_start) + x_start;
+        y = Math.random() * (y_end - y_start) + y_start;
+        _results.push(this.create_cloud(x, y));
+      }
+      return _results;
+    };
+
     return Clouds;
 
   })();
