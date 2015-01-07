@@ -35,7 +35,7 @@
           return this.cockpit.body.velocity.y = -100;
         }
       } else if (cursors.down.isDown) {
-        if (this.body.y + this.body.height > this.game.world.height) {
+        if (this.body.y + this.body.height > GAME_HEIGHT) {
           return this.stop();
         } else {
           this.body.body.velocity.y = 100;

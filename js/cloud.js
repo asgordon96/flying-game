@@ -14,18 +14,18 @@
 
     Clouds.prototype.setup = function() {
       this.clouds = this.game.add.group();
-      return this.clouds.enableBody = true;
+      this.clouds.enableBody = true;
+      this.fog = this.game.add.image(0, 0, "fog");
+      this.fog.scale.setTo(this.game.world.width / 10, this.game.world.height / 10);
+      this.fog.alpha = 0.8;
+      return this.fog.visible = false;
     };
 
     Clouds.prototype.create_cloud = function(x, y) {
       var cloud;
       cloud = this.clouds.create(x, y, "cloud");
       cloud.scale.setTo(2.0, 2.0);
-      cloud.body.velocity.x = -75;
-      this.fog = this.game.add.image(0, 0, "fog");
-      this.fog.scale.setTo(this.game.world.width / 10, this.game.world.height / 10);
-      this.fog.alpha = 0.8;
-      return this.fog.visible = false;
+      return cloud.body.velocity.x = -75;
     };
 
     Clouds.prototype.update = function() {

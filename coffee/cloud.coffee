@@ -11,16 +11,16 @@ class @Clouds
     setup: ->
         @clouds = @game.add.group()
         @clouds.enableBody = true
+        
+        @fog = @game.add.image(0, 0, "fog")
+        @fog.scale.setTo(@game.world.width / 10, @game.world.height / 10)
+        @fog.alpha = 0.8
+        @fog.visible = false
 
     create_cloud: (x, y) ->
         cloud = @clouds.create(x, y, "cloud")
         cloud.scale.setTo(2.0, 2.0)
         cloud.body.velocity.x = -75
-
-        @fog = @game.add.image(0, 0, "fog")
-        @fog.scale.setTo(@game.world.width / 10, @game.world.height / 10)
-        @fog.alpha = 0.8
-        @fog.visible = false
 
     update: ->
         @game.physics.arcade.overlap(@player.cockpit, @clouds, =>

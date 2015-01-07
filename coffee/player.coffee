@@ -28,7 +28,7 @@ class @Player
         		@tail.body.velocity.y = -100
         		@cockpit.body.velocity.y = -100
         else if cursors.down.isDown
-        	if @body.y + @body.height > @game.world.height
+        	if @body.y + @body.height > GAME_HEIGHT
         		@stop()
         	else
         		@body.body.velocity.y = 100
