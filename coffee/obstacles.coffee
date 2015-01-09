@@ -72,13 +72,22 @@ class @Obstacles
                 
         @last_shake_time = @game.time.now
     
+    set_game_over_objects: (text, button) ->
+        @game_over_text = text
+        @button = button
+    
+    show_game_over: ->
+        @game_over_text.visible = true
+        @button.visible = true
+    
     update: ->
-        @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) ->
+        @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>
             player.parent.children.forEach (sprite) ->
                 sprite.body.velocity.y = 0
             
             plane.body.velocity.x = 0
             plane.other_part.body.velocity.x = 0
+            @show_game_over()
         )
         
         @game.physics.arcade.overlap(@player.cockpit, @clouds, =>

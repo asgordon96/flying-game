@@ -1,13 +1,13 @@
 class @Player
+    @preload: (game) ->
+        game.load.image("airplane_tail", "sprites/airplane_tail.png")
+        game.load.image("airplane_body", "sprites/airplane_body.png")
+        game.load.image("airplane_cockpit", "sprites/airplane_cockpit.png")
+    
     constructor: (game) ->
         @game = game
         @passenger_health = 100
         @passenger_happiness = 100
-    
-    preload: (game) ->
-        game.load.image("airplane_tail", "sprites/airplane_tail.png")
-        game.load.image("airplane_body", "sprites/airplane_body.png")
-        game.load.image("airplane_cockpit", "sprites/airplane_cockpit.png")
     
     create: (x, y)->
         @plane = @game.add.group()

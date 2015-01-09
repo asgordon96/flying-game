@@ -101,14 +101,27 @@
       return this.last_shake_time = this.game.time.now;
     };
 
+    Obstacles.prototype.set_game_over_objects = function(text, button) {
+      this.game_over_text = text;
+      return this.button = button;
+    };
+
+    Obstacles.prototype.show_game_over = function() {
+      this.game_over_text.visible = true;
+      return this.button.visible = true;
+    };
+
     Obstacles.prototype.update = function() {
-      this.game.physics.arcade.overlap(this.player.plane, this.planes, function(player, plane) {
-        player.parent.children.forEach(function(sprite) {
-          return sprite.body.velocity.y = 0;
-        });
-        plane.body.velocity.x = 0;
-        return plane.other_part.body.velocity.x = 0;
-      });
+      this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
+        return function(player, plane) {
+          player.parent.children.forEach(function(sprite) {
+            return sprite.body.velocity.y = 0;
+          });
+          plane.body.velocity.x = 0;
+          plane.other_part.body.velocity.x = 0;
+          return _this.show_game_over();
+        };
+      })(this));
       this.game.physics.arcade.overlap(this.player.cockpit, this.clouds, (function(_this) {
         return function() {
           _this.fog.visible = true;
