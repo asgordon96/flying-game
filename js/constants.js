@@ -12,4 +12,6 @@
 
   this.SHAKE_HEIGHT = 20;
 
+  this.LIGHTNING_TIME = 0.2;
+
 }).call(this);

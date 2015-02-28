@@ -7,14 +7,18 @@
       game.load.image("oncoming_plane_body", "sprites/airplane_flipped_body.png");
       game.load.image("oncoming_plane_tail", "sprites/airplane_flipped_tail.png");
       game.load.image("cloud", "sprites/cloud.png");
+      game.load.image("storm_cloud", "sprites/storm_cloud.png");
       game.load.image("fog", "sprites/fog.png");
-      return game.load.image("turbulence", "sprites/wind.png");
+      game.load.image("turbulence", "sprites/wind.png");
+      return game.load.image("lightning", "sprites/lightning.png");
     };
 
     function Obstacles(game, player) {
       this.game = game;
       this.player = player;
+      this.create_lightning = __bind(this.create_lightning, this);
       this.create_turbulence = __bind(this.create_turbulence, this);
+      this.create_storm_cloud = __bind(this.create_storm_cloud, this);
       this.create_cloud = __bind(this.create_cloud, this);
       this.create_plane = __bind(this.create_plane, this);
       this.clouds_last_overlapped = 0;
@@ -30,6 +34,7 @@
       this.planes.enableBody = true;
       this.clouds.enableBody = true;
       this.turbulence.enableBody = true;
+      this.lightning = this.game.add.group();
       this.fog = this.game.add.image(0, 0, "fog");
       this.fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT + SHAKE_HEIGHT) / 10);
       this.fog.alpha = 0.8;
@@ -53,10 +58,23 @@
       return cloud.body.velocity.x = -CLOUD_VELOCITY;
     };
 
+    Obstacles.prototype.create_storm_cloud = function(x, y) {
+      var cloud;
+      cloud = this.clouds.create(x, y, "storm_cloud");
+      cloud.scale.setTo(2.0, 2.0);
+      return cloud.body.velocity.x = -CLOUD_VELOCITY;
+    };
+
     Obstacles.prototype.create_turbulence = function(x, y) {
       var wind;
       wind = this.turbulence.create(x, y, "turbulence");
       return wind.body.velocity.x = -CLOUD_VELOCITY;
+    };
+
+    Obstacles.prototype.create_lightning = function(x, y) {
+      var lightning;
+      lightning = this.lightning.create(x, y, "lightning");
+      return lightning.created_at = this.game.time.now;
     };
 
     Obstacles.prototype.create_obstacles = function(num_obstacles, x_start, x_end, y_start, y_end, create_function) {
@@ -70,8 +88,9 @@
       return _results;
     };
 
-    Obstacles.prototype.clouds_level = function(num_clouds, x_start, x_end, y_start, y_end) {
-      return this.create_obstacles(num_clouds, x_start, x_end, y_start, y_end, this.create_cloud);
+    Obstacles.prototype.clouds_level = function(num_clouds, x_start, x_end, y_start, y_end, percent_storm) {
+      this.create_obstacles(Math.round(num_clouds * (1 - percent_storm)), x_start, x_end, y_start, y_end, this.create_cloud);
+      return this.create_obstacles(Math.round(num_clouds * percent_storm), x_start, x_end, y_start, y_end, this.create_storm_cloud);
     };
 
     Obstacles.prototype.planes_level = function(num_planes, x_start, x_end, y_start, y_end) {
@@ -111,6 +130,46 @@
       return this.button.visible = true;
     };
 
+    Obstacles.prototype.get_random_storm_cloud = function() {
+      var cloud, random_index, storm_clouds;
+      storm_clouds = (function() {
+        var _i, _len, _ref, _ref1, _ref2, _results;
+        _ref = this.clouds.children;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          cloud = _ref[_i];
+          if (cloud.key === "storm_cloud" && (0 < (_ref1 = cloud.x) && _ref1 < 800) && (0 < (_ref2 = cloud.y) && _ref2 < 600)) {
+            _results.push(cloud);
+          }
+        }
+        return _results;
+      }).call(this);
+      if (storm_clouds.length > 0) {
+        random_index = Math.floor(Math.random() * storm_clouds.length);
+        return storm_clouds[random_index];
+      }
+    };
+
+    Obstacles.prototype.update_lightning = function() {
+      var lightning_cloud;
+      this.get_random_storm_cloud();
+      if (Math.random() < 2.0 / 60.0) {
+        lightning_cloud = this.get_random_storm_cloud();
+        if (lightning_cloud) {
+          this.create_lightning(lightning_cloud.x, lightning_cloud.y + lightning_cloud.height - 10);
+        }
+      }
+      return this.lightning.forEach((function(_this) {
+        return function(bolt) {
+          if (bolt) {
+            if ((_this.game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)) {
+              return _this.lightning.removeChild(bolt);
+            }
+          }
+        };
+      })(this));
+    };
+
     Obstacles.prototype.update = function() {
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
@@ -138,8 +197,9 @@
         };
       })(this));
       if (this.game.time.now > this.turbulence_last_overlapped) {
-        return this.game.camera.y = 0;
+        this.game.camera.y = 0;
       }
+      return this.update_lightning();
     };
 
     return Obstacles;

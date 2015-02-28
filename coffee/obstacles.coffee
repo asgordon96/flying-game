@@ -3,8 +3,10 @@ class @Obstacles
         game.load.image("oncoming_plane_body", "sprites/airplane_flipped_body.png")
         game.load.image("oncoming_plane_tail", "sprites/airplane_flipped_tail.png")
         game.load.image("cloud", "sprites/cloud.png")
+        game.load.image("storm_cloud", "sprites/storm_cloud.png")
         game.load.image("fog", "sprites/fog.png")
         game.load.image("turbulence", "sprites/wind.png")
+        game.load.image("lightning", "sprites/lightning.png")
     
     constructor: (@game, @player) ->
         @clouds_last_overlapped = 0
@@ -19,6 +21,8 @@ class @Obstacles
         @planes.enableBody = true
         @clouds.enableBody = true
         @turbulence.enableBody = true
+        
+        @lightning = @game.add.group()
         
         @fog = @game.add.image(0, 0, "fog")
         @fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT+SHAKE_HEIGHT) / 10)
@@ -37,10 +41,19 @@ class @Obstacles
         cloud = @clouds.create(x, y, "cloud")
         cloud.scale.setTo(2.0, 2.0)
         cloud.body.velocity.x = -CLOUD_VELOCITY
+        
+    create_storm_cloud: (x, y) =>
+        cloud = @clouds.create(x, y, "storm_cloud")
+        cloud.scale.setTo(2.0, 2.0)
+        cloud.body.velocity.x = -CLOUD_VELOCITY
     
     create_turbulence: (x, y) =>
         wind = @turbulence.create(x, y, "turbulence")
         wind.body.velocity.x = -CLOUD_VELOCITY
+    
+    create_lightning: (x, y) =>
+        lightning = @lightning.create(x, y, "lightning")
+        lightning.created_at = @game.time.now
     
     create_obstacles: (num_obstacles, x_start, x_end, y_start, y_end, create_function) ->
         for i in [1..num_obstacles]
@@ -48,8 +61,9 @@ class @Obstacles
         	y = Math.random() * (y_end - y_start) + y_start
         	create_function(x, y)
     
-    clouds_level: (num_clouds, x_start, x_end, y_start, y_end) ->
-        @create_obstacles(num_clouds, x_start, x_end, y_start, y_end, @create_cloud)
+    clouds_level: (num_clouds, x_start, x_end, y_start, y_end, percent_storm) ->
+        @create_obstacles(Math.round(num_clouds * (1-percent_storm)), x_start, x_end, y_start, y_end, @create_cloud)
+        @create_obstacles(Math.round(num_clouds * percent_storm), x_start, x_end, y_start, y_end, @create_storm_cloud)
     
     planes_level: (num_planes, x_start, x_end, y_start, y_end) ->
         @create_obstacles(num_planes, x_start, x_end, y_start, y_end, @create_plane)
@@ -80,6 +94,25 @@ class @Obstacles
         @game_over_text.visible = true
         @button.visible = true
     
+    get_random_storm_cloud: ->
+        storm_clouds = (cloud for cloud in @clouds.children when cloud.key == "storm_cloud" and 0 < cloud.x < 800 and 0 < cloud.y < 600)
+        if storm_clouds.length > 0
+            random_index = Math.floor(Math.random() * storm_clouds.length)
+            return storm_clouds[random_index]
+    
+    update_lightning: ->
+        @get_random_storm_cloud()
+        if (Math.random() < 2.0 / 60.0)
+            lightning_cloud = @get_random_storm_cloud()
+            if (lightning_cloud)
+                @create_lightning(lightning_cloud.x, lightning_cloud.y+lightning_cloud.height-10)
+        
+        @lightning.forEach (bolt) =>
+            if (bolt)
+                if (@game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)
+                    @lightning.removeChild(bolt)
+         
+    
     update: ->
         @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>
             player.parent.children.forEach (sprite) ->
@@ -105,4 +138,6 @@ class @Obstacles
 
         if @game.time.now > @turbulence_last_overlapped
             @game.camera.y = 0
+        
+        @update_lightning()
         

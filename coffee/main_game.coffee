@@ -7,7 +7,7 @@ class @MainGame
         @player.create(100, 100)
         @obstacles.setup()
         
-        @obstacles.clouds_level(25, 800, 2000, 0, 500)
+        @obstacles.clouds_level(25, 800, 2000, 0, 500, 0.5)
         @obstacles.turbulence_level(25, 800, 2000, 0, 500)
         @obstacles.planes_level(10, 2000, 10000, 0, 500)
         
