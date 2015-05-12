@@ -7,15 +7,17 @@
 
     MainGame.prototype.create = function() {
       var style;
-      this.player = new Player(this.game);
+      this.health_bar = new HealthBar(this.game);
+      this.player = new Player(this.game, this.health_bar);
       this.obstacles = new Obstacles(this.game, this.player);
       this.player.create(100, 100);
       this.obstacles.setup();
       this.obstacles.clouds_level(25, 800, 2000, 0, 500, 0.5);
       this.obstacles.turbulence_level(25, 800, 2000, 0, 500);
       this.obstacles.planes_level(10, 2000, 10000, 0, 500);
+      this.health_bar.create(GAME_WIDTH / 2, 20);
       style = {
-        font: "100px Arial",
+        font: "76px Arial",
         fill: "rgb(0,0,0)",
         align: "center"
       };
@@ -47,6 +49,8 @@
   game.state.add("Menu", Menu);
 
   game.state.add("Game", MainGame);
+
+  game.state.add("LevelComplete", LevelComplete);
 
   game.state.start("Preloader");
 

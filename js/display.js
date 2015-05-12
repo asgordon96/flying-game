@@ -12,8 +12,10 @@
     }
 
     HealthBar.prototype.create = function(x, y) {
-      this.back = this.game.add.image(x, y, "health_bar_back");
-      return this.front = this.game.add.image(x, y, "health_bar_front");
+      this.back = this.game.add.image(0, y, "health_bar_back");
+      this.front = this.game.add.image(0, y, "health_bar_front");
+      this.back.x = x - this.back.width / 2;
+      return this.front.x = this.back.x;
     };
 
     HealthBar.prototype.set_percentage = function(percent) {

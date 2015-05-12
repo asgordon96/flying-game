@@ -14,4 +14,6 @@
 
   this.LIGHTNING_TIME = 0.2;
 
+  this.LIGHTNING_DAMAGE = 5;
+
 }).call(this);

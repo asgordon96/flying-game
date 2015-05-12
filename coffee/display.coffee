@@ -8,9 +8,12 @@ class @HealthBar
         @game = game
     
     create: (x, y) ->
-        @back = @game.add.image(x, y, "health_bar_back")
-        @front = @game.add.image(x, y, "health_bar_front")
+        @back = @game.add.image(0, y, "health_bar_back")
+        @front = @game.add.image(0, y, "health_bar_front")
+        # now center around x
+        @back.x = x - @back.width / 2
+        @front.x = @back.x
     
     set_percentage: (percent) ->
         @percentage = percent
-        @front.scale.x = percent / 100;
+        @front.scale.x = percent / 100

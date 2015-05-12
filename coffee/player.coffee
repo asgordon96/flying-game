@@ -4,10 +4,10 @@ class @Player
         game.load.image("airplane_body", "sprites/airplane_body.png")
         game.load.image("airplane_cockpit", "sprites/airplane_cockpit.png")
     
-    constructor: (game) ->
+    constructor: (game, health_bar) ->
         @game = game
-        @passenger_health = 100
-        @passenger_happiness = 100
+        @health = 100
+        @health_bar = health_bar
     
     create: (x, y)->
         @plane = @game.add.group()
@@ -41,3 +41,7 @@ class @Player
         @body.body.velocity.y = 0
         @tail.body.velocity.y = 0
         @cockpit.body.velocity.y = 0
+    
+    decrease_health: (amount) ->
+        @health -= amount
+        @health_bar.set_percentage(@health)

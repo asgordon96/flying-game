@@ -18,11 +18,12 @@ class @Obstacles
         @clouds = @game.add.group()
         @turbulence = @game.add.group()
         @planes = @game.add.group()
+        @lightning = @game.add.group()
+        
         @planes.enableBody = true
         @clouds.enableBody = true
         @turbulence.enableBody = true
-        
-        @lightning = @game.add.group()
+        @lightning.enableBody = true
         
         @fog = @game.add.image(0, 0, "fog")
         @fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT+SHAKE_HEIGHT) / 10)
@@ -107,22 +108,44 @@ class @Obstacles
             if (lightning_cloud)
                 @create_lightning(lightning_cloud.x, lightning_cloud.y+lightning_cloud.height-10)
         
-        @lightning.forEach (bolt) =>
-            if (bolt)
+        for bolt in @lightning.children
+            if bolt
                 if (@game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)
                     @lightning.removeChild(bolt)
-         
+    
+    # checks to see if ALL of a group's sprite are offscreen left
+    offscreen_left: (group) ->
+        for sprite in group.children
+            if (sprite.x + sprite.width) >= 0
+                return false
+        
+        return true
+    
+    level_complete: ->
+        for group in [@clouds, @planes, @turbulence, @lightning]
+            if not @offscreen_left(group)
+                return false
+                
+        return true
     
     update: ->
+        # if we won the level, tell the player
+        if @level_complete()
+            @game.state.start("LevelComplete", true, false, 2)
+        
+        # collision detection with incoming planes
         @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>
             player.parent.children.forEach (sprite) ->
                 sprite.body.velocity.y = 0
             
             plane.body.velocity.x = 0
             plane.other_part.body.velocity.x = 0
+            
+            # if the player hits the oncoming player, they lose
             @show_game_over()
         )
         
+        # show the fog if the cockpit is in the clouds
         @game.physics.arcade.overlap(@player.cockpit, @clouds, =>
         	@fog.visible = true
         	@clouds_last_overlapped = @game.time.now + 100
@@ -131,6 +154,7 @@ class @Obstacles
         if @game.time.now > @clouds_last_overlapped
         	@fog.visible = false
         
+        # shake the screen if the player is on an area of turbulence
         @game.physics.arcade.overlap(@player.body, @turbulence, =>
             @shake()
             @turbulence_last_overlapped = @game.time.now + 100
@@ -140,4 +164,10 @@ class @Obstacles
             @game.camera.y = 0
         
         @update_lightning()
+        
+        # decrease player health when struck by lightning
+        @game.physics.arcade.overlap(@player.plane, @lightning, =>
+            @player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60))
+        )
+        
         

@@ -7,10 +7,10 @@
       return game.load.image("airplane_cockpit", "sprites/airplane_cockpit.png");
     };
 
-    function Player(game) {
+    function Player(game, health_bar) {
       this.game = game;
-      this.passenger_health = 100;
-      this.passenger_happiness = 100;
+      this.health = 100;
+      this.health_bar = health_bar;
     }
 
     Player.prototype.create = function(x, y) {
@@ -51,6 +51,11 @@
       this.body.body.velocity.y = 0;
       this.tail.body.velocity.y = 0;
       return this.cockpit.body.velocity.y = 0;
+    };
+
+    Player.prototype.decrease_health = function(amount) {
+      this.health -= amount;
+      return this.health_bar.set_percentage(this.health);
     };
 
     return Player;

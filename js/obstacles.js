@@ -31,10 +31,11 @@
       this.clouds = this.game.add.group();
       this.turbulence = this.game.add.group();
       this.planes = this.game.add.group();
+      this.lightning = this.game.add.group();
       this.planes.enableBody = true;
       this.clouds.enableBody = true;
       this.turbulence.enableBody = true;
-      this.lightning = this.game.add.group();
+      this.lightning.enableBody = true;
       this.fog = this.game.add.image(0, 0, "fog");
       this.fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT + SHAKE_HEIGHT) / 10);
       this.fog.alpha = 0.8;
@@ -151,7 +152,7 @@
     };
 
     Obstacles.prototype.update_lightning = function() {
-      var lightning_cloud;
+      var bolt, lightning_cloud, _i, _len, _ref, _results;
       this.get_random_storm_cloud();
       if (Math.random() < 2.0 / 60.0) {
         lightning_cloud = this.get_random_storm_cloud();
@@ -159,18 +160,51 @@
           this.create_lightning(lightning_cloud.x, lightning_cloud.y + lightning_cloud.height - 10);
         }
       }
-      return this.lightning.forEach((function(_this) {
-        return function(bolt) {
-          if (bolt) {
-            if ((_this.game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)) {
-              return _this.lightning.removeChild(bolt);
-            }
+      _ref = this.lightning.children;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        bolt = _ref[_i];
+        if (bolt) {
+          if ((this.game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)) {
+            _results.push(this.lightning.removeChild(bolt));
+          } else {
+            _results.push(void 0);
           }
-        };
-      })(this));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+
+    Obstacles.prototype.offscreen_left = function(group) {
+      var sprite, _i, _len, _ref;
+      _ref = group.children;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        sprite = _ref[_i];
+        if ((sprite.x + sprite.width) >= 0) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    Obstacles.prototype.level_complete = function() {
+      var group, _i, _len, _ref;
+      _ref = [this.clouds, this.planes, this.turbulence, this.lightning];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        group = _ref[_i];
+        if (!this.offscreen_left(group)) {
+          return false;
+        }
+      }
+      return true;
     };
 
     Obstacles.prototype.update = function() {
+      if (this.level_complete()) {
+        this.game.state.start("LevelComplete", true, false, 2);
+      }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
           player.parent.children.forEach(function(sprite) {
@@ -199,7 +233,12 @@
       if (this.game.time.now > this.turbulence_last_overlapped) {
         this.game.camera.y = 0;
       }
-      return this.update_lightning();
+      this.update_lightning();
+      return this.game.physics.arcade.overlap(this.player.plane, this.lightning, (function(_this) {
+        return function() {
+          return _this.player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60));
+        };
+      })(this));
     };
 
     return Obstacles;

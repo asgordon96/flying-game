@@ -6,3 +6,5 @@
 @SHAKE_VELOCITY = 10
 @SHAKE_HEIGHT = 20
 @LIGHTNING_TIME = 0.2 # in seconds
+
+@LIGHTNING_DAMAGE = 5 # lightning damage per strike
