@@ -13,9 +13,10 @@
       return game.load.image("lightning", "sprites/lightning.png");
     };
 
-    function Obstacles(game, player) {
+    function Obstacles(game, player, level) {
       this.game = game;
       this.player = player;
+      this.level = level;
       this.create_lightning = __bind(this.create_lightning, this);
       this.create_turbulence = __bind(this.create_turbulence, this);
       this.create_storm_cloud = __bind(this.create_storm_cloud, this);
@@ -203,7 +204,7 @@
 
     Obstacles.prototype.update = function() {
       if (this.level_complete()) {
-        this.game.state.start("LevelComplete", true, false, 2);
+        this.game.state.start("LevelComplete", true, false, this.level);
       }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
@@ -234,11 +235,14 @@
         this.game.camera.y = 0;
       }
       this.update_lightning();
-      return this.game.physics.arcade.overlap(this.player.plane, this.lightning, (function(_this) {
+      this.game.physics.arcade.overlap(this.player.plane, this.lightning, (function(_this) {
         return function() {
           return _this.player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60));
         };
       })(this));
+      if (this.player.health <= 0) {
+        return this.show_game_over();
+      }
     };
 
     return Obstacles;

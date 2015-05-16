@@ -8,7 +8,7 @@ class @Obstacles
         game.load.image("turbulence", "sprites/wind.png")
         game.load.image("lightning", "sprites/lightning.png")
     
-    constructor: (@game, @player) ->
+    constructor: (@game, @player, @level) ->
         @clouds_last_overlapped = 0
         @turbulence_last_overlapped = 0
         @camera_direction_positive = true
@@ -131,7 +131,7 @@ class @Obstacles
     update: ->
         # if we won the level, tell the player
         if @level_complete()
-            @game.state.start("LevelComplete", true, false, 2)
+            @game.state.start("LevelComplete", true, false, @level)
         
         # collision detection with incoming planes
         @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>
@@ -170,4 +170,7 @@ class @Obstacles
             @player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60))
         )
         
+        # if player health is at 0, show game over screen
+        if @player.health <= 0
+            @show_game_over()
         

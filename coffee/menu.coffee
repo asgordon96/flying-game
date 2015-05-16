@@ -4,6 +4,7 @@ class @Menu
     preload: ->
         @game.load.image("button", "sprites/button.png")
         @game.load.image("try_again", "sprites/try_again.png")
+        @game.load.image("next_level", "sprites/next_level.png")
     
     create: ->
         @game.add.button(GAME_WIDTH / 2 - 76, 300, "button", @on_play_now)
@@ -15,6 +16,6 @@ class @Menu
         title.anchor.set(0.5)
     
     on_play_now: ->
-        @game.state.start("Game")
+        @game.state.start("Game", true, false, 1)
                       
     

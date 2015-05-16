@@ -5,7 +5,8 @@
 
     Menu.prototype.preload = function() {
       this.game.load.image("button", "sprites/button.png");
-      return this.game.load.image("try_again", "sprites/try_again.png");
+      this.game.load.image("try_again", "sprites/try_again.png");
+      return this.game.load.image("next_level", "sprites/next_level.png");
     };
 
     Menu.prototype.create = function() {
@@ -23,7 +24,7 @@
     };
 
     Menu.prototype.on_play_now = function() {
-      return this.game.state.start("Game");
+      return this.game.state.start("Game", true, false, 1);
     };
 
     return Menu;

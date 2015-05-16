@@ -6,8 +6,7 @@
     Preloader.prototype.preload = function() {
       HealthBar.preload(this.game);
       Obstacles.preload(this.game);
-      Player.preload(this.game);
-      return HealthBar.preload(this.game);
+      return Player.preload(this.game);
     };
 
     Preloader.prototype.create = function() {
