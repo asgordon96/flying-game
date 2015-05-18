@@ -55,6 +55,9 @@
 
     Player.prototype.decrease_health = function(amount) {
       this.health -= amount;
+      if (this.health < 0) {
+        this.health = 0;
+      }
       return this.health_bar.set_percentage(this.health);
     };
 

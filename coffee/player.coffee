@@ -44,4 +44,7 @@ class @Player
     
     decrease_health: (amount) ->
         @health -= amount
+        if @health < 0
+            @health = 0
+        
         @health_bar.set_percentage(@health)

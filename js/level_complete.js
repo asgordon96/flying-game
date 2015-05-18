@@ -33,4 +33,27 @@
 
   })();
 
+  this.GameOver = (function() {
+    function GameOver(game) {}
+
+    GameOver.prototype.create = function() {
+      var game_over_text, play_again, style;
+      style = {
+        font: "76px Arial",
+        fill: "rgb(0,0,0)",
+        align: "center"
+      };
+      game_over_text = this.game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Game Over", style);
+      game_over_text.anchor.set(0.5);
+      return play_again = this.game.add.button(GAME_WIDTH / 2 - 76, 300, "try_again", (function(_this) {
+        return function() {
+          return _this.game.state.start("Game", true, false, 1);
+        };
+      })(this));
+    };
+
+    return GameOver;
+
+  })();
+
 }).call(this);

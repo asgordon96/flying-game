@@ -87,13 +87,8 @@ class @Obstacles
                 
         @last_shake_time = @game.time.now
     
-    set_game_over_objects: (text, button) ->
-        @game_over_text = text
-        @button = button
-    
     show_game_over: ->
-        @game_over_text.visible = true
-        @button.visible = true
+        @game.state.start("GameOver", false, false)
     
     get_random_storm_cloud: ->
         storm_clouds = (cloud for cloud in @clouds.children when cloud.key == "storm_cloud" and 0 < cloud.x < 800 and 0 < cloud.y < 600)
@@ -102,8 +97,7 @@ class @Obstacles
             return storm_clouds[random_index]
     
     update_lightning: ->
-        @get_random_storm_cloud()
-        if (Math.random() < 2.0 / 60.0)
+        if (Math.random() < LIGHTNING_PROB)
             lightning_cloud = @get_random_storm_cloud()
             if (lightning_cloud)
                 @create_lightning(lightning_cloud.x, lightning_cloud.y+lightning_cloud.height-10)
@@ -131,7 +125,7 @@ class @Obstacles
     update: ->
         # if we won the level, tell the player
         if @level_complete()
-            @game.state.start("LevelComplete", true, false, @level)
+            @game.state.start("LevelComplete", false, false, @level)
         
         # collision detection with incoming planes
         @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>

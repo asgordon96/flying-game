@@ -122,14 +122,8 @@
       return this.last_shake_time = this.game.time.now;
     };
 
-    Obstacles.prototype.set_game_over_objects = function(text, button) {
-      this.game_over_text = text;
-      return this.button = button;
-    };
-
     Obstacles.prototype.show_game_over = function() {
-      this.game_over_text.visible = true;
-      return this.button.visible = true;
+      return this.game.state.start("GameOver", false, false);
     };
 
     Obstacles.prototype.get_random_storm_cloud = function() {
@@ -154,8 +148,7 @@
 
     Obstacles.prototype.update_lightning = function() {
       var bolt, lightning_cloud, _i, _len, _ref, _results;
-      this.get_random_storm_cloud();
-      if (Math.random() < 2.0 / 60.0) {
+      if (Math.random() < LIGHTNING_PROB) {
         lightning_cloud = this.get_random_storm_cloud();
         if (lightning_cloud) {
           this.create_lightning(lightning_cloud.x, lightning_cloud.y + lightning_cloud.height - 10);
@@ -204,7 +197,7 @@
 
     Obstacles.prototype.update = function() {
       if (this.level_complete()) {
-        this.game.state.start("LevelComplete", true, false, this.level);
+        this.game.state.start("LevelComplete", false, false, this.level);
       }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {

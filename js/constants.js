@@ -14,6 +14,26 @@
 
   this.LIGHTNING_TIME = 0.2;
 
-  this.LIGHTNING_DAMAGE = 5;
+  this.LIGHTNING_PROB = 2.0 / 60.0;
+
+  this.LIGHTNING_DAMAGE = 3;
+
+  this.LEVEL1 = {
+    time: 30,
+    planes: 30,
+    clouds: 40,
+    f_lightning: 0.1,
+    turbulence: 5
+  };
+
+  this.TIME_INCREASE = 5;
+
+  this.PLANES_INCREASE = 10;
+
+  this.CLOUDS_INCREASE = 10;
+
+  this.F_LIGHTNING_INCREASE = 0.01;
+
+  this.TURBULENCE_INCREASE = 10;
 
 }).call(this);

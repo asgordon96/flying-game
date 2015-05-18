@@ -13,28 +13,15 @@
     };
 
     MainGame.prototype.create = function() {
-      var style;
-      console.log("Starting Level " + this.level);
+      var levels;
       this.health_bar = new HealthBar(this.game);
       this.player = new Player(this.game, this.health_bar);
       this.obstacles = new Obstacles(this.game, this.player, this.level);
       this.player.create(100, 100);
       this.obstacles.setup();
-      this.obstacles.clouds_level(25, 800, 2000, 0, 500, 0.5);
-      this.obstacles.turbulence_level(25, 800, 2000, 0, 500);
-      this.obstacles.planes_level(10, 2000, 10000, 0, 500);
-      this.health_bar.create(GAME_WIDTH / 2, 20);
-      style = {
-        font: "76px Arial",
-        fill: "rgb(0,0,0)",
-        align: "center"
-      };
-      this.game_over_text = this.game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Game Over", style);
-      this.play_again = this.game.add.button(GAME_WIDTH / 2 - 76, 300, "try_again", this.restart);
-      this.game_over_text.visible = false;
-      this.play_again.visible = false;
-      this.game_over_text.anchor.set(0.5);
-      return this.obstacles.set_game_over_objects(this.game_over_text, this.play_again);
+      levels = new Level(this.obstacles);
+      levels.generate_level(this.level);
+      return this.health_bar.create(GAME_WIDTH / 2, 20);
     };
 
     MainGame.prototype.update = function() {
@@ -59,6 +46,8 @@
   game.state.add("Game", MainGame);
 
   game.state.add("LevelComplete", LevelComplete);
+
+  game.state.add("GameOver", GameOver);
 
   game.state.start("Preloader");
 

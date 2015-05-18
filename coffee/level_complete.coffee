@@ -14,4 +14,15 @@ class @LevelComplete
     
     begin_next_level: =>
         @game.state.start("Game", true, false, @level_number + 1)
+
+
+class @GameOver
+    constructor: (game) ->
     
+    create: ->
+        style = {font: "76px Arial", fill: "rgb(0,0,0)", align: "center"}
+        game_over_text = @game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Game Over", style)
+        game_over_text.anchor.set(0.5)
+        play_again = @game.add.button(GAME_WIDTH / 2 - 76, 300, "try_again", =>
+            @game.state.start("Game", true, false, 1)
+        )
