@@ -1,10 +1,10 @@
 class @Menu
     constructor: (game) ->
     
-    preload: ->
-        @game.load.image("button", "sprites/button.png")
-        @game.load.image("try_again", "sprites/try_again.png")
-        @game.load.image("next_level", "sprites/next_level.png")
+    @preload_assets: (game) ->
+        game.load.image("button", "sprites/button.png")
+        game.load.image("try_again", "sprites/try_again.png")
+        game.load.image("next_level", "sprites/next_level.png")
     
     create: ->
         @game.add.button(GAME_WIDTH / 2 - 76, 300, "button", @on_play_now)

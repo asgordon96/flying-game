@@ -3,10 +3,10 @@
   this.Menu = (function() {
     function Menu(game) {}
 
-    Menu.prototype.preload = function() {
-      this.game.load.image("button", "sprites/button.png");
-      this.game.load.image("try_again", "sprites/try_again.png");
-      return this.game.load.image("next_level", "sprites/next_level.png");
+    Menu.preload_assets = function(game) {
+      game.load.image("button", "sprites/button.png");
+      game.load.image("try_again", "sprites/try_again.png");
+      return game.load.image("next_level", "sprites/next_level.png");
     };
 
     Menu.prototype.create = function() {

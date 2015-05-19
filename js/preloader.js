@@ -21,15 +21,23 @@
     function Preloader(game) {}
 
     Preloader.prototype.preload = function() {
-      var back, front;
+      var back, front, style, title;
       back = this.add.sprite(GAME_WIDTH / 2, GAME_HEIGHT / 2, "health_bar_back");
       back.anchor.setTo(0.5, 0.5);
       front = this.add.sprite(GAME_WIDTH / 2, GAME_HEIGHT / 2, "health_bar_front");
       front.anchor.setTo(0, 0.5);
       front.x = GAME_WIDTH / 2 - front.width / 2;
       this.load.setPreloadSprite(front);
+      style = {
+        font: "48px Arial",
+        fill: "rgb(0,0,0)",
+        align: "center"
+      };
+      title = this.game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Loading...", style);
+      title.anchor.set(0.5);
       Obstacles.preload(this.game);
-      return Player.preload(this.game);
+      Player.preload(this.game);
+      return Menu.preload_assets(this.game);
     };
 
     Preloader.prototype.create = function() {

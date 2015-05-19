@@ -20,8 +20,13 @@ class @Preloader
         front.x = GAME_WIDTH / 2 - front.width / 2
         @load.setPreloadSprite(front)
         
+        style = {font: "48px Arial", fill: "rgb(0,0,0)", align: "center"}
+        title = @game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Loading...", style)
+        title.anchor.set(0.5)
+        
         Obstacles.preload(@game);
         Player.preload(@game);
+        Menu.preload_assets(@game)
     
     create: ->
         @game.state.start("Menu")
