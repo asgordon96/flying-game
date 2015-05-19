@@ -27,6 +27,5 @@ class @Level
             f_lightning: LEVEL1.f_lightning + x * F_LIGHTNING_INCREASE
             turbulence: LEVEL1.turbulence + x * TURBULENCE_INCREASE
         
-        console.log(level_object)
         @generate_level_objects(level_object)
     

@@ -26,11 +26,12 @@ class @MainGame
 
 game = new Phaser.Game(800, 600, Phaser.AUTO, "game")
 
+game.state.add("Boot", Boot)
 game.state.add("Preloader", Preloader)
 game.state.add("Menu", Menu)
 game.state.add("Game", MainGame)
 game.state.add("LevelComplete", LevelComplete)
 game.state.add("GameOver", GameOver)
 
-game.state.start("Preloader")
+game.state.start("Boot")
         
