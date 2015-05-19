@@ -4,7 +4,9 @@
     function Boot(game) {}
 
     Boot.prototype.preload = function() {
-      return HealthBar.preload(this.game);
+      HealthBar.preload(this.game);
+      this.game.stage.setBackgroundColor('rgb(135,206,250)');
+      return this.game.world.setBounds(0, 0, 2000, 2000);
     };
 
     Boot.prototype.create = function() {

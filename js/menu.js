@@ -12,8 +12,6 @@
     Menu.prototype.create = function() {
       var style, title;
       this.game.add.button(GAME_WIDTH / 2 - 76, 300, "button", this.on_play_now);
-      this.game.stage.setBackgroundColor('rgb(135,206,250)');
-      this.game.world.setBounds(0, 0, 2000, 2000);
       style = {
         font: "100px Arial",
         fill: "rgb(0,0,0)",

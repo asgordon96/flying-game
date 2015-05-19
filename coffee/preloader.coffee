@@ -3,6 +3,8 @@ class @Boot
     
     preload: ->
         HealthBar.preload(@game)
+        @game.stage.setBackgroundColor('rgb(135,206,250)')
+        @game.world.setBounds(0, 0, 2000, 2000)
     
     create: ->
         @state.start("Preloader")
