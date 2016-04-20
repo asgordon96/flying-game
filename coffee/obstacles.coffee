@@ -13,6 +13,7 @@ class @Obstacles
         @turbulence_last_overlapped = 0
         @camera_direction_positive = true
         @last_shake_time = 0
+        @level_object = new Level(this)
         
     setup: ->
         @clouds = @game.add.group()
@@ -115,6 +116,15 @@ class @Obstacles
         
         return true
     
+    # returns true if there is no object from the group that is offscreen right
+    none_right_of_coord: (group, x_coord) ->
+        for sprite in group.children
+            if (sprite.x > x_coord)
+                return false 
+        
+        # didn't find any offscreen right, since we haven't returned false yet
+        return true
+    
     level_complete: ->
         for group in [@clouds, @planes, @turbulence, @lightning]
             if not @offscreen_left(group)
@@ -123,9 +133,11 @@ class @Obstacles
         return true
     
     update: ->
-        # if we won the level, tell the player
-        if @level_complete()
-            @game.state.start("LevelComplete", false, false, @level)
+        # when there are no more planes coming from the right
+        # generate the objects for the new level
+        if (@none_right_of_coord(@planes, GAME_WIDTH + 100))
+            @level += 1
+            @level_object.generate_level(@level)
         
         # collision detection with incoming planes
         @game.physics.arcade.overlap(@player.plane, @planes, (player, plane) =>

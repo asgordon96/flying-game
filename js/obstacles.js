@@ -26,6 +26,7 @@
       this.turbulence_last_overlapped = 0;
       this.camera_direction_positive = true;
       this.last_shake_time = 0;
+      this.level_object = new Level(this);
     }
 
     Obstacles.prototype.setup = function() {
@@ -183,6 +184,18 @@
       return true;
     };
 
+    Obstacles.prototype.none_right_of_coord = function(group, x_coord) {
+      var sprite, _i, _len, _ref;
+      _ref = group.children;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        sprite = _ref[_i];
+        if (sprite.x > x_coord) {
+          return false;
+        }
+      }
+      return true;
+    };
+
     Obstacles.prototype.level_complete = function() {
       var group, _i, _len, _ref;
       _ref = [this.clouds, this.planes, this.turbulence, this.lightning];
@@ -196,8 +209,9 @@
     };
 
     Obstacles.prototype.update = function() {
-      if (this.level_complete()) {
-        this.game.state.start("LevelComplete", false, false, this.level);
+      if (this.none_right_of_coord(this.planes, GAME_WIDTH + 100)) {
+        this.level += 1;
+        this.level_object.generate_level(this.level);
       }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
