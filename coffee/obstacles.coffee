@@ -178,5 +178,6 @@ class @Obstacles
         
         # if player health is at 0, show game over screen
         if @player.health <= 0
+            @player.stop()
             @show_game_over()
         

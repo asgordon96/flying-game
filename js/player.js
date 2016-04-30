@@ -10,6 +10,7 @@
     function Player(game, health_bar) {
       this.game = game;
       this.health = 100;
+      this.score = 0;
       this.health_bar = health_bar;
     }
 
@@ -24,27 +25,30 @@
     };
 
     Player.prototype.update = function() {
-      var cursors;
+      var cursors, dt;
       cursors = this.game.input.keyboard.createCursorKeys();
       if (cursors.up.isDown) {
         if (this.tail.y <= 0) {
-          return this.stop();
+          this.stop();
         } else {
           this.body.body.velocity.y = -100;
           this.tail.body.velocity.y = -100;
-          return this.cockpit.body.velocity.y = -100;
+          this.cockpit.body.velocity.y = -100;
         }
       } else if (cursors.down.isDown) {
         if (this.body.y + this.body.height > GAME_HEIGHT) {
-          return this.stop();
+          this.stop();
         } else {
           this.body.body.velocity.y = 100;
           this.tail.body.velocity.y = 100;
-          return this.cockpit.body.velocity.y = 100;
+          this.cockpit.body.velocity.y = 100;
         }
       } else {
-        return this.stop();
+        this.stop();
       }
+      dt = this.game.time.physicsElapsed;
+      this.score = this.score + SCORE_PER_SECOND * dt;
+      return this.health_bar.update_score(this.score);
     };
 
     Player.prototype.stop = function() {

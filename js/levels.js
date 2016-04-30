@@ -11,7 +11,7 @@
       x_end = level_obj.time * INCOMING_PLANE_VELOCITY;
       this.obstacles.planes_level(num_planes, GAME_WIDTH, x_end, 0, GAME_HEIGHT - 100);
       num_clouds = Math.round(level_obj.time / 60.0 * level_obj.clouds);
-      x_end = level_obj.time * CLOUD_VELOCITY;
+      x_end = level_obj.time * CLOUD_VELOCITY + CLOUD_SPAWN_X_EXTRA;
       this.obstacles.clouds_level(num_clouds, GAME_WIDTH, x_end, 0, GAME_HEIGHT - 100, level_obj.f_lightning);
       num_turbulence = Math.round(level_obj.time / 60.0 * level_obj.turbulence);
       return this.obstacles.turbulence_level(num_turbulence, GAME_WIDTH, x_end, 0, GAME_HEIGHT - 100);

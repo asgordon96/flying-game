@@ -15,12 +15,27 @@
       this.back = this.game.add.image(0, y, "health_bar_back");
       this.front = this.game.add.image(0, y, "health_bar_front");
       this.back.x = x - this.back.width / 2;
-      return this.front.x = this.back.x;
+      this.front.x = this.back.x;
+      return this.create_score(20, 20);
     };
 
     HealthBar.prototype.set_percentage = function(percent) {
       this.percentage = percent;
       return this.front.scale.x = percent / 100;
+    };
+
+    HealthBar.prototype.create_score = function(x, y) {
+      var style;
+      style = {
+        font: "32px Arial",
+        fill: "rgb(0, 0, 0)",
+        align: "center"
+      };
+      return this.score_text = this.game.add.text(x, y, "Score: 0", style);
+    };
+
+    HealthBar.prototype.update_score = function(score) {
+      return this.score_text.setText("Score: " + Math.floor(score));
     };
 
     return HealthBar;

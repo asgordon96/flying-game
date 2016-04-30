@@ -18,6 +18,10 @@
 
   this.LIGHTNING_DAMAGE = 3;
 
+  this.CLOUD_SPAWN_X_EXTRA = 300;
+
+  this.SCORE_PER_SECOND = 10;
+
   this.LEVEL1 = {
     time: 30,
     planes: 30,

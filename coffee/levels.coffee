@@ -10,7 +10,7 @@ class @Level
         
         # now create clouds
         num_clouds = Math.round(level_obj.time / 60.0 * level_obj.clouds)
-        x_end = level_obj.time * CLOUD_VELOCITY
+        x_end = level_obj.time * CLOUD_VELOCITY + CLOUD_SPAWN_X_EXTRA
         @obstacles.clouds_level(num_clouds, GAME_WIDTH, x_end, 0, GAME_HEIGHT- 100, level_obj.f_lightning)
         
         # now create turbulence

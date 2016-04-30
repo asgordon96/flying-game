@@ -7,6 +7,7 @@ class @Player
     constructor: (game, health_bar) ->
         @game = game
         @health = 100
+        @score = 0
         @health_bar = health_bar
     
     create: (x, y)->
@@ -36,6 +37,11 @@ class @Player
         		@cockpit.body.velocity.y = 100
         else
         	@stop()
+        
+        # increase the score
+        dt = @game.time.physicsElapsed # time in seconds elapsed in the last frame
+        @score = @score + SCORE_PER_SECOND * dt
+        @health_bar.update_score(@score)
     
     stop: ->
         @body.body.velocity.y = 0

@@ -17,7 +17,7 @@ class @MainGame
         
         @health_bar.create(GAME_WIDTH / 2, 20)
     
-    update: ->
+    update: ->        
         @player.update()
         @obstacles.update()
     
@@ -30,7 +30,7 @@ game.state.add("Boot", Boot)
 game.state.add("Preloader", Preloader)
 game.state.add("Menu", Menu)
 game.state.add("Game", MainGame)
-game.state.add("LevelComplete", LevelComplete)
+# game.state.add("LevelComplete", LevelComplete)
 game.state.add("GameOver", GameOver)
 
 game.state.start("Boot")

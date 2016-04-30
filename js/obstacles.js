@@ -248,6 +248,7 @@
         };
       })(this));
       if (this.player.health <= 0) {
+        this.player.stop();
         return this.show_game_over();
       }
     };

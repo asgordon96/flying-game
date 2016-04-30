@@ -47,8 +47,6 @@
 
   game.state.add("Game", MainGame);
 
-  game.state.add("LevelComplete", LevelComplete);
-
   game.state.add("GameOver", GameOver);
 
   game.state.start("Boot");

@@ -10,6 +10,11 @@
 
 @LIGHTNING_DAMAGE = 3 # lightning damage per strike
 
+@CLOUD_SPAWN_X_EXTRA = 300 # furthest right a cloud can be made is 200 to the right of for a plane
+# this is because clouds are slower, and a gap can be created between "levels"
+
+@SCORE_PER_SECOND = 10
+
 @LEVEL1 =
     time: 30 # level length in seconds
     planes: 30 # per minute
