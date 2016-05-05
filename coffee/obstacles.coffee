@@ -89,7 +89,7 @@ class @Obstacles
         @last_shake_time = @game.time.now
     
     show_game_over: ->
-        @game.state.start("GameOver", false, false)
+        @game.state.start("GameOver", false, false, Math.floor(@player.score))
     
     get_random_storm_cloud: ->
         storm_clouds = (cloud for cloud in @clouds.children when cloud.key == "storm_cloud" and 0 < cloud.x < 800 and 0 < cloud.y < 600)

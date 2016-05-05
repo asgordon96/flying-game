@@ -124,7 +124,7 @@
     };
 
     Obstacles.prototype.show_game_over = function() {
-      return this.game.state.start("GameOver", false, false);
+      return this.game.state.start("GameOver", false, false, Math.floor(this.player.score));
     };
 
     Obstacles.prototype.get_random_storm_cloud = function() {
