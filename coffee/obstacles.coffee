@@ -7,6 +7,7 @@ class @Obstacles
         game.load.image("fog", "sprites/fog.png")
         game.load.image("turbulence", "sprites/wind.png")
         game.load.image("lightning", "sprites/lightning.png")
+        game.load.audio("thunder", "audio/thunder_shortened.wav")
     
     constructor: (@game, @player, @level) ->
         @clouds_last_overlapped = 0
@@ -16,20 +17,28 @@ class @Obstacles
         @level_object = new Level(this)
         
     setup: ->
+        # setup the sprite groups for the different obstacles
         @clouds = @game.add.group()
         @turbulence = @game.add.group()
         @planes = @game.add.group()
         @lightning = @game.add.group()
         
+        # this turns on the physics engine for these sprite groups
         @planes.enableBody = true
         @clouds.enableBody = true
         @turbulence.enableBody = true
         @lightning.enableBody = true
         
+        # have the fog be an image covering the entire screen
+        # but don't make it visible yet
         @fog = @game.add.image(0, 0, "fog")
         @fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT+SHAKE_HEIGHT) / 10)
         @fog.alpha = 0.8
         @fog.visible = false
+        
+        # setup the thunder sound fx
+        @thunder = @game.add.audio("thunder")
+        @thunder.allowMultiple = true
     
     create_plane: (x, y) => 
         tail = @planes.create(x, y, "oncoming_plane_tail")
@@ -56,6 +65,7 @@ class @Obstacles
     create_lightning: (x, y) =>
         lightning = @lightning.create(x, y, "lightning")
         lightning.created_at = @game.time.now
+        @thunder.play()
     
     create_obstacles: (num_obstacles, x_start, x_end, y_start, y_end, create_function) ->
         for i in [1..num_obstacles]

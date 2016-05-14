@@ -10,7 +10,8 @@
       game.load.image("storm_cloud", "sprites/storm_cloud.png");
       game.load.image("fog", "sprites/fog.png");
       game.load.image("turbulence", "sprites/wind.png");
-      return game.load.image("lightning", "sprites/lightning.png");
+      game.load.image("lightning", "sprites/lightning.png");
+      return game.load.audio("thunder", "audio/thunder_shortened.wav");
     };
 
     function Obstacles(game, player, level) {
@@ -41,7 +42,9 @@
       this.fog = this.game.add.image(0, 0, "fog");
       this.fog.scale.setTo(GAME_WIDTH / 10, (GAME_HEIGHT + SHAKE_HEIGHT) / 10);
       this.fog.alpha = 0.8;
-      return this.fog.visible = false;
+      this.fog.visible = false;
+      this.thunder = this.game.add.audio("thunder");
+      return this.thunder.allowMultiple = true;
     };
 
     Obstacles.prototype.create_plane = function(x, y) {
@@ -77,7 +80,8 @@
     Obstacles.prototype.create_lightning = function(x, y) {
       var lightning;
       lightning = this.lightning.create(x, y, "lightning");
-      return lightning.created_at = this.game.time.now;
+      lightning.created_at = this.game.time.now;
+      return this.thunder.play();
     };
 
     Obstacles.prototype.create_obstacles = function(num_obstacles, x_start, x_end, y_start, y_end, create_function) {

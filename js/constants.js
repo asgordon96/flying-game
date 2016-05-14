@@ -14,13 +14,13 @@
 
   this.LIGHTNING_TIME = 0.2;
 
-  this.LIGHTNING_PROB = 2.0 / 60.0;
+  this.LIGHTNING_PROB = 1.0 / 60.0;
 
   this.LIGHTNING_DAMAGE = 3;
 
   this.CLOUD_SPAWN_X_EXTRA = 300;
 
-  this.SCORE_PER_SECOND = 10;
+  this.SCORE_PER_SECOND = 5;
 
   this.LEVEL1 = {
     time: 30,

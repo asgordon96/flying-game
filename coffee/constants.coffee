@@ -6,14 +6,14 @@
 @SHAKE_VELOCITY = 10
 @SHAKE_HEIGHT = 20
 @LIGHTNING_TIME = 0.2 # in seconds
-@LIGHTNING_PROB = 2.0 / 60.0 
+@LIGHTNING_PROB = 1.0 / 60.0 
 
 @LIGHTNING_DAMAGE = 3 # lightning damage per strike
 
 @CLOUD_SPAWN_X_EXTRA = 300 # furthest right a cloud can be made is 200 to the right of for a plane
 # this is because clouds are slower, and a gap can be created between "levels"
 
-@SCORE_PER_SECOND = 10
+@SCORE_PER_SECOND = 5
 
 @LEVEL1 =
     time: 30 # level length in seconds
