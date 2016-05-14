@@ -3,11 +3,21 @@ class @Menu
     
     @preload_assets: (game) ->
         game.load.image("button", "sprites/button.png")
+        game.load.image("credits_button", "sprites/credits_button.png")
+        game.load.image("back_button", "sprites/back_button.png")
         game.load.image("try_again", "sprites/try_again.png")
         game.load.image("next_level", "sprites/next_level.png")
     
     create: ->
-        @game.add.button(GAME_WIDTH / 2 - 76, 300, "button", @on_play_now)
+        # create the Play Now button and center it 
+        play_now = @game.add.button(0, 0, "button", @on_play_now)
+        play_now.x = GAME_WIDTH / 2 - play_now.width / 2
+        play_now.y = 300
+        
+        # create the credits button and center it
+        credits = @game.add.button(0, 0, "credits_button", @show_credits)
+        credits.x = GAME_WIDTH / 2 - credits.width / 2
+        credits.y = 360
         
         style = {font: "100px Arial", fill: "rgb(0,0,0)", align: "center"}
         title = @game.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "Flying Game", style)
@@ -15,5 +25,8 @@ class @Menu
     
     on_play_now: ->
         @game.state.start("Game", true, false, 1)
+    
+    show_credits: ->
+        @game.state.start("Credits", true, false)
                       
     

@@ -8,6 +8,7 @@ class @Obstacles
         game.load.image("turbulence", "sprites/wind.png")
         game.load.image("lightning", "sprites/lightning.png")
         game.load.audio("thunder", "audio/thunder_shortened.wav")
+        game.load.audio("collision", "audio/collision.wav")
     
     constructor: (@game, @player, @level) ->
         @clouds_last_overlapped = 0
@@ -36,9 +37,10 @@ class @Obstacles
         @fog.alpha = 0.8
         @fog.visible = false
         
-        # setup the thunder sound fx
+        # setup the thunder and collision sound fx
         @thunder = @game.add.audio("thunder")
         @thunder.allowMultiple = true
+        @collision_sound = @game.add.audio("collision")
     
     create_plane: (x, y) => 
         tail = @planes.create(x, y, "oncoming_plane_tail")
@@ -158,6 +160,7 @@ class @Obstacles
             plane.other_part.body.velocity.x = 0
             
             # if the player hits the oncoming player, they lose
+            @collision_sound.play()
             @show_game_over()
         )
         

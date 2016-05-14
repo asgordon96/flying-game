@@ -11,7 +11,8 @@
       game.load.image("fog", "sprites/fog.png");
       game.load.image("turbulence", "sprites/wind.png");
       game.load.image("lightning", "sprites/lightning.png");
-      return game.load.audio("thunder", "audio/thunder_shortened.wav");
+      game.load.audio("thunder", "audio/thunder_shortened.wav");
+      return game.load.audio("collision", "audio/collision.wav");
     };
 
     function Obstacles(game, player, level) {
@@ -44,7 +45,8 @@
       this.fog.alpha = 0.8;
       this.fog.visible = false;
       this.thunder = this.game.add.audio("thunder");
-      return this.thunder.allowMultiple = true;
+      this.thunder.allowMultiple = true;
+      return this.collision_sound = this.game.add.audio("collision");
     };
 
     Obstacles.prototype.create_plane = function(x, y) {
@@ -224,6 +226,7 @@
           });
           plane.body.velocity.x = 0;
           plane.other_part.body.velocity.x = 0;
+          _this.collision_sound.play();
           return _this.show_game_over();
         };
       })(this));
