@@ -6,19 +6,23 @@
     Menu.preload_assets = function(game) {
       game.load.image("button", "sprites/button.png");
       game.load.image("credits_button", "sprites/credits_button.png");
+      game.load.image("how_to_play", "sprites/how_to_play.png");
       game.load.image("back_button", "sprites/back_button.png");
       game.load.image("try_again", "sprites/try_again.png");
       return game.load.image("next_level", "sprites/next_level.png");
     };
 
     Menu.prototype.create = function() {
-      var credits, play_now, style, title;
+      var credits, how_to_play, play_now, style, title;
       play_now = this.game.add.button(0, 0, "button", this.on_play_now);
       play_now.x = GAME_WIDTH / 2 - play_now.width / 2;
       play_now.y = 300;
+      how_to_play = this.game.add.button(0, 0, "how_to_play", this.show_how_to_play);
+      how_to_play.x = GAME_WIDTH / 2 - how_to_play.width / 2;
+      how_to_play.y = 360;
       credits = this.game.add.button(0, 0, "credits_button", this.show_credits);
       credits.x = GAME_WIDTH / 2 - credits.width / 2;
-      credits.y = 360;
+      credits.y = 415;
       style = {
         font: "100px Arial",
         fill: "rgb(0,0,0)",
@@ -34,6 +38,10 @@
 
     Menu.prototype.show_credits = function() {
       return this.game.state.start("Credits", true, false);
+    };
+
+    Menu.prototype.show_how_to_play = function() {
+      return this.game.state.start("HowToPlay", true, false);
     };
 
     return Menu;

@@ -47,6 +47,8 @@
 
   game.state.add("Credits", Credits);
 
+  game.state.add("HowToPlay", HowToPlay);
+
   game.state.add("Game", MainGame);
 
   game.state.add("GameOver", GameOver);

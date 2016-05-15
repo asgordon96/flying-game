@@ -11,6 +11,7 @@
       game.load.image("fog", "sprites/fog.png");
       game.load.image("turbulence", "sprites/wind.png");
       game.load.image("lightning", "sprites/lightning.png");
+      game.load.image("fire_particle", "sprites/fire_particle.png");
       game.load.audio("thunder", "audio/thunder_shortened.wav");
       return game.load.audio("collision", "audio/collision.wav");
     };
@@ -46,7 +47,13 @@
       this.fog.visible = false;
       this.thunder = this.game.add.audio("thunder");
       this.thunder.allowMultiple = true;
-      return this.collision_sound = this.game.add.audio("collision");
+      this.collision_sound = this.game.add.audio("collision");
+      this.emitter = this.game.add.emitter(0, 0, 400);
+      this.emitter.makeParticles("fire_particle");
+      this.emitter.gravity = 0;
+      this.emitter.setXSpeed(-100, 100);
+      this.emitter.setYSpeed(-100, 100);
+      return this.emitter.setAlpha(1, 0.5, 800);
     };
 
     Obstacles.prototype.create_plane = function(x, y) {
@@ -95,6 +102,12 @@
         _results.push(create_function(x, y));
       }
       return _results;
+    };
+
+    Obstacles.prototype.create_explosion = function(x, y) {
+      this.emitter.x = x;
+      this.emitter.y = y;
+      return this.emitter.start(true, 800, null, 50);
     };
 
     Obstacles.prototype.clouds_level = function(num_clouds, x_start, x_end, y_start, y_end, percent_storm) {
@@ -221,12 +234,20 @@
       }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
+          var plane_x, plane_y, player_x, player_y, x, y;
           player.parent.children.forEach(function(sprite) {
             return sprite.body.velocity.y = 0;
           });
           plane.body.velocity.x = 0;
           plane.other_part.body.velocity.x = 0;
           _this.collision_sound.play();
+          player_x = plane.body.x + plane.width / 2;
+          player_y = plane.body.y + plane.height / 2;
+          plane_x = plane.body.x + plane.width / 2;
+          plane_y = plane.body.y + plane.height / 2;
+          x = (player_x + plane_x) / 2;
+          y = (player_y + plane_y) / 2;
+          _this.create_explosion(x, y);
           return _this.show_game_over();
         };
       })(this));

@@ -7,6 +7,7 @@ class @Obstacles
         game.load.image("fog", "sprites/fog.png")
         game.load.image("turbulence", "sprites/wind.png")
         game.load.image("lightning", "sprites/lightning.png")
+        game.load.image("fire_particle", "sprites/fire_particle.png")
         game.load.audio("thunder", "audio/thunder_shortened.wav")
         game.load.audio("collision", "audio/collision.wav")
     
@@ -41,6 +42,14 @@ class @Obstacles
         @thunder = @game.add.audio("thunder")
         @thunder.allowMultiple = true
         @collision_sound = @game.add.audio("collision")
+        
+        # setup explosion particle emitter and its parameters
+        @emitter = @game.add.emitter(0, 0, 400)
+        @emitter.makeParticles("fire_particle")
+        @emitter.gravity = 0
+        @emitter.setXSpeed(-100, 100)
+        @emitter.setYSpeed(-100, 100)
+        @emitter.setAlpha(1, 0.5, 800)
     
     create_plane: (x, y) => 
         tail = @planes.create(x, y, "oncoming_plane_tail")
@@ -74,6 +83,11 @@ class @Obstacles
         	x = Math.random() * (x_end - x_start) + x_start
         	y = Math.random() * (y_end - y_start) + y_start
         	create_function(x, y)
+    
+    create_explosion: (x, y) ->
+        @emitter.x = x
+        @emitter.y = y
+        @emitter.start(true, 800, null, 50)
     
     clouds_level: (num_clouds, x_start, x_end, y_start, y_end, percent_storm) ->
         @create_obstacles(Math.round(num_clouds * (1-percent_storm)), x_start, x_end, y_start, y_end, @create_cloud)
@@ -161,6 +175,18 @@ class @Obstacles
             
             # if the player hits the oncoming player, they lose
             @collision_sound.play()
+            
+            # now show the explosion particle effect
+            # make sure the explosion appears in the right spot
+            # TODO: make the location better
+            player_x = plane.body.x + plane.width / 2
+            player_y = plane.body.y + plane.height / 2
+            plane_x = plane.body.x + plane.width / 2
+            plane_y = plane.body.y + plane.height / 2
+            x = (player_x + plane_x) / 2
+            y = (player_y + plane_y) / 2
+            @create_explosion(x, y)
+            
             @show_game_over()
         )
         

@@ -32,4 +32,37 @@ class @Credits
     
     back_to_main_menu: ->
         @game.state.start("Menu")
+
+# class for the game state for the how to play screen
+class @HowToPlay
+    constructor: (game) ->
+    
+    create: ->
+        # create the big title that says "Credits"
+        title_style = {font: "48px Arial", fill: "rgb(0,0,0)", align:"center"}
+        title = @game.add.text(0, 0, "How to Play", title_style)
+        title.x = GAME_WIDTH / 2 - title.width / 2
+        title.y = 25
         
+        style = {font: "24px Arial", fill: "rgb(0,0,0)", align: "center"}
+        x = 50
+        y_start = 100
+        y_gap = 40
+        
+        text = ["Use the up and down arrow keys to move the plane up and down",
+                "Avoid colliding with incoming planes or getting struck by lightning",
+                "Get as far as you can for the highest possible score"]
+        
+        # draw text on the screen, left aligned, and with even height spacing
+        for i in [0..text.length]
+            y = y_start + i * y_gap
+            @game.add.text(x, y, text[i], style)
+        
+        # add the "Back to Main Menu" button
+        back = @game.add.button(0, 0, "back_button", @back_to_main_menu)
+        back.x = GAME_WIDTH / 2 - back.width / 2
+        back.y = GAME_HEIGHT - 150
+    
+    back_to_main_menu: ->
+        @game.state.start("Menu")
+    
