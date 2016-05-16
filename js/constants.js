@@ -16,7 +16,7 @@
 
   this.LIGHTNING_PROB = 1.0 / 60.0;
 
-  this.LIGHTNING_DAMAGE = 3;
+  this.LIGHTNING_DAMAGE = 50;
 
   this.CLOUD_SPAWN_X_EXTRA = 300;
 

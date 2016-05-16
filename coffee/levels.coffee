@@ -6,12 +6,12 @@ class @Level
         # create oncoming planes
         num_planes = Math.round(level_obj.time / 60.0 * level_obj.planes)
         x_end = level_obj.time * INCOMING_PLANE_VELOCITY
-        @obstacles.planes_level(num_planes, GAME_WIDTH, x_end, 0, GAME_HEIGHT - 100)
+        @obstacles.planes_level(num_planes, GAME_WIDTH, x_end, 0, GAME_HEIGHT - 43)
         
         # now create clouds
         num_clouds = Math.round(level_obj.time / 60.0 * level_obj.clouds)
         x_end = level_obj.time * CLOUD_VELOCITY + CLOUD_SPAWN_X_EXTRA
-        @obstacles.clouds_level(num_clouds, GAME_WIDTH, x_end, 0, GAME_HEIGHT- 100, level_obj.f_lightning)
+        @obstacles.clouds_level(num_clouds, GAME_WIDTH, x_end, 0, GAME_HEIGHT- 43, level_obj.f_lightning)
         
         # now create turbulence
         num_turbulence = Math.round(level_obj.time / 60.0 * level_obj.turbulence)

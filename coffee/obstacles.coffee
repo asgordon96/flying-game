@@ -132,7 +132,7 @@ class @Obstacles
         
         for bolt in @lightning.children
             if bolt
-                if (@game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)
+                if (@game.time.now - bolt.created_at) >= (LIGHTNING_TIME * 1000)
                     @lightning.removeChild(bolt)
     
     # checks to see if ALL of a group's sprite are offscreen left
@@ -213,12 +213,15 @@ class @Obstacles
         @update_lightning()
         
         # decrease player health when struck by lightning
-        @game.physics.arcade.overlap(@player.plane, @lightning, =>
-            @player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60))
+        @game.physics.arcade.overlap(@player.body, @lightning, =>
+            health_decrease = @game.time.elapsed / (LIGHTNING_TIME * 1000) * LIGHTNING_DAMAGE
+            @player.decrease_health(health_decrease)
         )
         
         # if player health is at 0, show game over screen
+        # and show an explosio on the player's plane
         if @player.health <= 0
+            @create_explosion(@player.body.x + @player.body.width / 2, @player.body.y + @player.body.height / 2)
             @player.stop()
             @show_game_over()
         

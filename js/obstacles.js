@@ -179,7 +179,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         bolt = _ref[_i];
         if (bolt) {
-          if ((this.game.time.now - bolt.created_at) > (LIGHTNING_TIME * 1000)) {
+          if ((this.game.time.now - bolt.created_at) >= (LIGHTNING_TIME * 1000)) {
             _results.push(this.lightning.removeChild(bolt));
           } else {
             _results.push(void 0);
@@ -271,12 +271,15 @@
         this.game.camera.y = 0;
       }
       this.update_lightning();
-      this.game.physics.arcade.overlap(this.player.plane, this.lightning, (function(_this) {
+      this.game.physics.arcade.overlap(this.player.body, this.lightning, (function(_this) {
         return function() {
-          return _this.player.decrease_health(LIGHTNING_DAMAGE / (0.2 * 60));
+          var health_decrease;
+          health_decrease = _this.game.time.elapsed / (LIGHTNING_TIME * 1000) * LIGHTNING_DAMAGE;
+          return _this.player.decrease_health(health_decrease);
         };
       })(this));
       if (this.player.health <= 0) {
+        this.create_explosion(this.player.body.x + this.player.body.width / 2, this.player.body.y + this.player.body.height / 2);
         this.player.stop();
         return this.show_game_over();
       }
