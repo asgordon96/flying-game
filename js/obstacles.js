@@ -53,7 +53,7 @@
       this.emitter.gravity = 0;
       this.emitter.setXSpeed(-100, 100);
       this.emitter.setYSpeed(-100, 100);
-      return this.emitter.setAlpha(1, 0.5, 800);
+      return this.emitter.setAlpha(1, 0.1, 800);
     };
 
     Obstacles.prototype.create_plane = function(x, y) {
@@ -107,7 +107,7 @@
     Obstacles.prototype.create_explosion = function(x, y) {
       this.emitter.x = x;
       this.emitter.y = y;
-      return this.emitter.start(true, 800, null, 50);
+      return this.emitter.start(true, 800, null, 100);
     };
 
     Obstacles.prototype.clouds_level = function(num_clouds, x_start, x_end, y_start, y_end, percent_storm) {
@@ -234,15 +234,16 @@
       }
       this.game.physics.arcade.overlap(this.player.plane, this.planes, (function(_this) {
         return function(player, plane) {
-          var plane_x, plane_y, player_x, player_y, x, y;
+          var plane_x, plane_y, player_body, player_x, player_y, x, y;
           player.parent.children.forEach(function(sprite) {
             return sprite.body.velocity.y = 0;
           });
           plane.body.velocity.x = 0;
           plane.other_part.body.velocity.x = 0;
           _this.collision_sound.play();
-          player_x = plane.body.x + plane.width / 2;
-          player_y = plane.body.y + plane.height / 2;
+          player_body = player.parent.children[1];
+          player_x = player_body.x + player_body.width / 2;
+          player_y = player_body.y + player_body.height / 2;
           plane_x = plane.body.x + plane.width / 2;
           plane_y = plane.body.y + plane.height / 2;
           x = (player_x + plane_x) / 2;

@@ -44,12 +44,13 @@ class @Obstacles
         @collision_sound = @game.add.audio("collision")
         
         # setup explosion particle emitter and its parameters
+        # TODO: make this explosion look better
         @emitter = @game.add.emitter(0, 0, 400)
         @emitter.makeParticles("fire_particle")
         @emitter.gravity = 0
         @emitter.setXSpeed(-100, 100)
         @emitter.setYSpeed(-100, 100)
-        @emitter.setAlpha(1, 0.5, 800)
+        @emitter.setAlpha(1, 0.1, 800)
     
     create_plane: (x, y) => 
         tail = @planes.create(x, y, "oncoming_plane_tail")
@@ -87,7 +88,7 @@ class @Obstacles
     create_explosion: (x, y) ->
         @emitter.x = x
         @emitter.y = y
-        @emitter.start(true, 800, null, 50)
+        @emitter.start(true, 800, null, 100)
     
     clouds_level: (num_clouds, x_start, x_end, y_start, y_end, percent_storm) ->
         @create_obstacles(Math.round(num_clouds * (1-percent_storm)), x_start, x_end, y_start, y_end, @create_cloud)
@@ -177,10 +178,11 @@ class @Obstacles
             @collision_sound.play()
             
             # now show the explosion particle effect
-            # make sure the explosion appears in the right spot
-            # TODO: make the location better
-            player_x = plane.body.x + plane.width / 2
-            player_y = plane.body.y + plane.height / 2
+            # take the location of the player's body and the incoming plane and average them
+            # to get the location for the explosion
+            player_body = player.parent.children[1]
+            player_x = player_body.x + player_body.width / 2
+            player_y = player_body.y + player_body.height / 2
             plane_x = plane.body.x + plane.width / 2
             plane_y = plane.body.y + plane.height / 2
             x = (player_x + plane_x) / 2
